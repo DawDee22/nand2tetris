@@ -12,7 +12,7 @@ def openhack(filename):
 	strippedlist = []
 	for line in commands:
 		strippedlist.append(line.strip())
-	print(strippedlist)
+	#print(strippedlist)
 	#print(commands)
 	commands = [x for x in strippedlist if x]
 	return(commands)
@@ -27,7 +27,7 @@ def readcommands(commandlist):
 			binarycommands.append(Cparser(command))
 		elif determinecommandtype(command) == 'L_command':
 			binarycommands.append(command + ' L')
-	print(binarycommands)
+	#print(binarycommands)
 	return(binarycommands)
 
 # Determines the type of command
@@ -77,6 +77,7 @@ def writehackfile(binlist, filename):
 	with open(newfilename, 'w') as f:
 		for item in binlist:
   			f.write("%s\n" % item)
+	print('Hack file successfully written to {}'.format(newfilename))
 
 
 if __name__ == "__main__":

@@ -36,8 +36,8 @@ def determinecommandtype(command):
 # Removes the comments and white space from a command list
 def removecomments(commandlist):
 	commandlist = list(map(commentline, commandlist))
-	commandlist = [ i.strip(' ') for i in commandlist]
 	commandlist = [ i.strip('\n') for i in commandlist]
+	commandlist = [ i.strip(' ') for i in commandlist]
 	commandlist = list(filter(lambda x : x != '', commandlist))
 	commandlist = list(filter(lambda x : x != '\n', commandlist))
 	return(commandlist)

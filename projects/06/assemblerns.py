@@ -9,12 +9,6 @@ from sys import argv
 def openhack(filename):
 	with open(filename, 'r') as hackfile:
 		commands = hackfile.readlines()
-	strippedlist = []
-	for line in commands:
-		strippedlist.append(line.strip())
-	#print(strippedlist)
-	#print(commands)
-	commands = [x for x in strippedlist if x]
 	return(commands)
 
 # March through commands and parse
@@ -26,7 +20,7 @@ def readcommands(commandlist):
 		elif determinecommandtype(command) == 'C_command':
 			binarycommands.append(Cparser(command))
 		elif determinecommandtype(command) == 'L_command':
-			binarycommands.append(command + ' L')
+			pass
 	#print(binarycommands)
 	return(binarycommands)
 
@@ -40,8 +34,25 @@ def determinecommandtype(command):
 		return('L_command')
 
 # Removes the comments and white space from a command list
-def removecomments(commandlist):	
-	return(x for x in commandlist if not x.startswith('//'))
+def removecomments(commandlist):
+	commandlist = list(map(commentline, commandlist))
+	commandlist = [ i.strip(' ') for i in commandlist]
+	commandlist = [ i.strip('\n') for i in commandlist]
+	commandlist = list(filter(lambda x : x != '', commandlist))
+	commandlist = list(filter(lambda x : x != '\n', commandlist))
+	return(commandlist)
+	
+# removes comments from one line
+def commentline(line):
+	op = '//'
+	index = line.find(op)
+	if index == -1:
+		return(line)
+	elif index == 0:
+		return('')
+	else:
+		line = line[:(index - 1)]
+	return line
 
 #A instruction parser
 def Aparser(command):
@@ -73,7 +84,7 @@ def Cbinaryconvert(dest, comp, jump):
 
 # write new hack file
 def writehackfile(binlist, filename):
-	newfilename = filename[:-3] + 'hack'
+	newfilename = filename[:filename.find('.')+1] + 'hack'
 	with open(newfilename, 'w') as f:
 		for item in binlist:
   			f.write("%s\n" % item)
